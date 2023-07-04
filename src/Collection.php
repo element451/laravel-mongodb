@@ -48,13 +48,14 @@ class Collection
         } catch (Exception $e) {
 //            11602 - operation was interrupted
 //            10107 - not primary
-            if ($e->getCode() == 11602 || $e->getCode() == 10107) {
+//            13435 - not primary and secondaryOk=false
+            if ($e->getCode() == 11602 || $e->getCode() == 10107 || $e->getCode() == 13435) {
                 Log::info(
                     'Query execution was interrupted and will be retried',
                     ['code' => $e->getCode(), 'mess' => $e->getMessage(), 'params' => $parameters]
                 );
             } else {
-                report('Unexpected error: ' . $e->getMessage());
+                report('Unexpected error: Code - ' . $e->getCode() . ' message - ' . $e->getMessage());
                 Log::info('Unexpected error', [
                     'mess' => $e->getMessage(),
                     'code' => $e->getCode(),
